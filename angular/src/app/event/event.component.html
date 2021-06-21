@@ -1,0 +1,133 @@
+<button class="btn btn-danger" (click)="openNew(add)">New</button>
+<br>
+  <div class="mb-2">
+    <input class="form-control" id="eventName"  placeholder="Search event" [(ngModel)]="filterText"/>
+  </div>
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">Name</th>
+      <th scope="col">Date</th>
+      <th scope="col">StartTime</th>
+      <th scope="col">EndTime</th>
+      <th scope="col">Location</th>
+      <!-- <th scope="col">Type</th> -->
+      <th scope="col">Organizer Name</th>
+    </tr>
+  </thead>
+  <tbody *ngFor="let event of getevents | eventFilter:filterText">
+    <tr>
+      <th scope="row">{{event.id}}</th>
+      <td>{{event.name}}</td>
+      <td>{{event.date}}</td>
+      <td>{{event.startTime}}</td>
+      <td>{{event.endTime}}</td>
+      <td>{{event.location}}</td>
+      <!-- <td>{{event.type}}</td> -->
+      <td>{{event.organizerName}}</td>
+      <td>
+        <button class="btn btn-outline-primary" (click)="openUpdate(update, event.id)">Edit</button>
+        <button class="btn btn-danger" (click)="onDelete(event.id)">Delete</button>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<ng-template #add let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">New Event</h4>
+    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <form (ngSubmit)="addEvent()" [formGroup]="eventAddForm">
+      <div class="form-group">
+        <label for="name">Name</label>
+        <div class="input-group">
+          <input id="name" type="text" class="form-control" placeholder="Type name" name="name" formControlName="name">
+        </div>
+        <label for="type">Event type</label>
+        <div class="input-group py-3">
+        <select name="type" formControlName="type" class="form-select" aria-label="Default select example">
+          <option value="0">Wedding</option>
+          <option value="1">Birthday</option>
+          <option value="2">Union</option>
+        </select>
+        </div>
+        <label for="date">Date</label>
+        <div class="input-group py-3">
+          <input id="date" type="date" class="form-control" placeholder="yyyy-mm-dd" name="date"
+            formControlName="date" />
+        </div>
+        <label for="endTime">EndTime</label>
+        <div class="input-group py-3">
+          <input id="startTime" type="date" class="form-control" placeholder="yyyy-mm-dd" name="startTime"
+            formControlName="startTime" />
+        </div>
+        <label for="startTime">StartTime</label>
+        <div class="input-group py-3">
+          <input id="endTime" type="date" class="form-control" placeholder="yyyy-mm-dd" name="endTime"
+            formControlName="endTime" />
+        </div>
+        <label for="location">Location</label>
+        <div class="input-group">
+          <input id="location" type="text" class="form-control" placeholder="Type location" name="location"
+            formControlName="location">
+        </div>
+        <label for="organizerId">Organizer</label>
+        <div class="input-group py-3">
+        <select name="organizerId" formControlName="organizerId" class="form-select" aria-label="Default select example" >
+          <option disabled selected>Open this select menu</option>
+          <option *ngFor="let organizer of getOrganizers" value={{organizer.id}}>{{organizer.name}}</option>
+        </select>      
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="submit" class="btn btn-outline-dark" (click)="modal.close('Save click')">Save</button>
+      </div>
+    </form>
+
+  </div>
+
+</ng-template>
+
+<ng-template #update let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">Edit Event</h4>
+    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <form (ngSubmit)="updateEvent()" [formGroup]="eventUpdateForm">
+      <div class="form-group">
+        <label for="endTime">EndTime</label>
+        <div class="input-group py-3">
+          <input id="startTime" type="date" class="form-control" placeholder="yyyy-mm-dd" name="startTime"
+            formControlName="startTime" />
+        </div>
+        <label for="startTime">StartTime</label>
+        <div class="input-group py-3">
+          <input id="endTime" type="date" class="form-control" placeholder="yyyy-mm-dd" name="endTime"
+            formControlName="endTime" />
+        </div>
+        <label for="location">Location</label>
+        <div class="input-group">
+          <input id="location" class="form-control" placeholder="Type location" name="location"
+            formControlName="location">
+        </div>
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-outline-dark" (click)="modal.close('Save click')">Save</button>
+        </div>
+      </div>
+    </form>
+  </div>
+
+</ng-template>
+
+
+<hr>
+
+<pre>{{ closeResult }}</pre>
